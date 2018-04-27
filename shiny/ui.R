@@ -43,7 +43,7 @@ library(ggvis)
                            tabBox(width = NULL,
                                   tabPanel(h5("Filter"),
                                    checkboxGroupInput('filter_table_countries', 'Countries to Display:',
-                                                      levels(pilotdata$Country), selected = levels(pilotdata$Country)))),
+                                                      levels(over_year$Country), selected = levels(over_year$Country)))),
                           tabBox(width=8)),
                     column(width = 10,
                       wellPanel(dataTableOutput("table"))))),
@@ -74,18 +74,12 @@ library(ggvis)
                          h4('Length up to 20000 words.'))),
         
         tabItem(tabName = "city",
-                fluidRow(height = "20%",
-                  box(width = 9)),
                 fluidRow(height = "40%",
-                         box(width = 6, 
-                             plotOutput("plot1")),
-                         box(width = 6,
-                             plotOutput("plot2"))),
+                         box(width = 12, 
+                             plotOutput("plot1"))),
                 fluidRow(height = "40%",
-                         box(width = 6,
-                             plotOutput("plot3")),
-                         box(width = 6,
-                             plotOutput("plot4")))
+                         box(width = 12,
+                             plotOutput("plot3")))
                 )
         ))
   

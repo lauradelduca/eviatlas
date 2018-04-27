@@ -12,7 +12,7 @@ shinyServer(
   function(input, output, session){
   #customize data table output
   data.explorer.table <- reactive({
-    pilotdata %>%
+    over_year %>%
       filter(Country %in% input$filter_table_countries)
   })
   
@@ -44,8 +44,7 @@ shinyServer(
   })
 
   output$plot1 <- renderPlot({
-    ggplot() + 
-      ggtitle("EviAtlas Plot 1") 
+    GenTimeTrend(over_year)
   })  
 
   output$plot2 <- renderPlot({
@@ -56,10 +55,7 @@ shinyServer(
   })
   
   output$plot3 <- renderPlot({
-    c3 <- ggplot() +
-      geom_point() + 
-      ggtitle("EviAtlas Plot 3")
-    c3
+    GenLocationTrend()
   })
   
   output$plot4 <- renderPlot({
@@ -69,7 +65,7 @@ shinyServer(
   })
   
   output$heatmap <- renderPlot({
-      GenHeatMap(heatmap_test, c(input$heat_select_x, input$heat_select_y))
+      GenHeatMap(pilotdata, c(input$heat_select_x, input$heat_select_y))
     # heatmp
   })
 
@@ -80,9 +76,8 @@ shinyServer(
 
 
   output$map <- renderLeaflet({
-    leaflet() %>% 
-      addTiles() %>%
-      setView(18.0955533, 59.3338257, zoom = 3)
+    sys_map(over_year, over_year$Lat., over_year$Long.) %>%
+      setView(18.0955533, 59.3338257, zoom = 3) 
   })
 
   observe({

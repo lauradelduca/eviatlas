@@ -1,15 +1,16 @@
-#------------------------------------
-#' Simple R code to create GenTimeTrend from dataset
+#' Create GenTimeTrend from dataset
+#'
 #' Created For	  : ES Hackathon 2018
 #' @param idata Input data frame
-#' @param selcols List of strings with column names
-#' @return Returns a timetrend object showing number of literature under different categories in user specified \code{selcols}
+#' @param year_column List of strings with column names
+#' @return Returns a timetrend object showing number of literature under different categories in user specified \code{year_column}
 #'
 #' @author Ezgi Tanriver-Ayder 24 April 2018
 #'
-#' @examples
-#'
-#'
+#' @param df A dataframe
+#' @param year_column a vector of columns to use
+#' @keywords SystematicReview,
+#' @export
 
 library(dplyr)
 library(tidyr)
@@ -18,28 +19,23 @@ library(ggplot2)
 library(reshape2)
 
 
-# Import data -------
-ifile <- file.path(getwd(),"exploration","NarrativeTable_GoogleMap.csv")
-idata <- as.data.frame(read.csv(file=ifile,skip=0,blank.lines.skip=TRUE))
-
- GenTimeTrend = function(idata, selcols, verbose = FALSE){
-
-  library(tidyverse)
-  library(ggplot2)
-  library(reshape2)
-
+GenTimeTrend = function(idata = eviatlas::pilotdata, year_column = NULL, verbose = FALSE){
+  
   # Check if Year column exists -------
-  selcols <- c("Year")
-  if (length(which(colnames(idata)==selcols))>0){
+  if (!length(year_column)) {
+    year_column <- c("Year")
+  }
+  
+  if (length(which(colnames(idata)==year_column))>0){
     message("GenTimeTrend: Year column found")
-
-
-  # Count combination of vars --------
-    seldata<- idata[selcols] %>%
-      add_count_(selcols) %>%
-      complete_(selcols, fill = list(n=0)) %>% distinct()
-
-  # Plot Heatmap ------
+    
+    
+    # Count combination of vars --------
+    seldata<- idata[year_column] %>%
+      add_count_(year_column) %>%
+      complete_(year_column, fill = list(n=0)) %>% distinct()
+    
+    # Plot Heatmap ------
     # Plot bar chart
     iyears<- min(seldata$Year):max(seldata$Year)
     timemp<- ggplot(seldata, aes_string(x=colnames(seldata[1]),y=colnames(seldata[2]))) +
@@ -48,16 +44,18 @@ idata <- as.data.frame(read.csv(file=ifile,skip=0,blank.lines.skip=TRUE))
       scale_x_continuous(name="Year", breaks = iyears)+
       labs(y="No of studies")+ ggtitle("Distribution of studies over time")+
       theme_bw()+
-      theme(axis.line = element_line(colour = "black"),panel.background = element_blank(), plot.title = element_text(hjust = .5))
+      theme(axis.line = element_line(colour = "black"),
+            panel.background = element_blank(),
+            plot.title = element_text(hjust = .5))
     timemp
     if (verbose) {
       message("GenTimeTrend: Time trend plot created!")
     }
     timemp
-
+    
   } else {
     message("GenTimeTrend: Year not found")
   } # if col exists
-
-  return(heatmp)
- }
+  
+  return(timemp)
+}
