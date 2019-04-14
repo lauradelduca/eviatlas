@@ -59,7 +59,8 @@ body <- dashboardBody(
                   tabPanel(title = 'About EviAtlas', htmlOutput("start_text")),
                   tabPanel(title = 'About Systematic Maps', htmlOutput("about_sysmap_text")),
                   tabPanel(title = 'How to Use EviAtlas', htmlOutput("how_works_text")),
-                  tabPanel(title = 'Data Attributes', htmlOutput("uploaded_attributes"), tableOutput("data_summary"))
+                  tabPanel(title = 'Data Attributes', htmlOutput("uploaded_attributes"), 
+                           tableOutput("data_summary"))
                 ))
               ),
 
@@ -67,70 +68,85 @@ body <- dashboardBody(
       sidebarPanel(
         tabsetPanel(
           tabPanel(title = "Upload Data",
-            radioButtons(
-              "sample_or_real",
-              label = h4("Which Data to Use?"),
-              choices = list(
-                "Sample Data" = 'sample',
-                "Upload User Data" = 'user'
-              ),
-              selected = "user"
-            ),
-
-            conditionalPanel(
-              condition = "input.sample_or_real == 'user'",
-
-              # Input: Select a file ----
-              fluidRow(
-                fileInput(
-                  "sysmapdata_upload",
-                  label = "Choose CSV File",
-                  multiple = FALSE,
-                  accept = c(
-                    "text/csv",
-                    "text/comma-separated-values,text/plain",
-                    ".csv"),
-                  placeholder = "Systematic Map Data (100 MB Limit)"
-                )),
-              fluidRow(
-                h5(strong("CSV Properties")),
-                column(
-                  6,
-                  # Input: Checkbox if file has header ----
-                  checkboxInput("header", "Header row?", TRUE),
-                  radioButtons("upload_encoding",
-                               label = "Select File Encoding",
-                               choices = list("Default" = "", "UTF-8", "latin1"),
-                           selected = ""
-                         )
-                       ),
-                       column(6,
-                          # Input: Select separator ----
-                          radioButtons("sep",
+                   radioButtons(
+                     "sample_or_real",
+                     label = h4("Which Data to Use?"),
+                     choices = list(
+                       "Sample Data" = "sample",
+                       "Upload from .csv format (spreadsheet)" = "user",
+                       "Upload from .shp format (shapefile)" = "shapefile"
+                     ),
+                     selected = "user"
+                   ),
+                   
+                   conditionalPanel(
+                     condition = "input.sample_or_real == 'user'",
+                     
+                     # Input: Select a file ----
+                     fluidRow(
+                       fileInput(
+                         "sysmapdata_upload",
+                         label = "Choose CSV File",
+                         multiple = FALSE,
+                         accept = c(
+                           "text/csv",
+                           "text/comma-separated-values,text/plain",
+                           ".csv"),
+                         placeholder = "Systematic Map Data (100 MB Limit)"
+                       )),
+                     fluidRow(h5(strong("CSV Properties")),
+                              column(6, 
+                                     # Input: Checkbox if file has header ----
+                                     checkboxInput("header", "Header row?", TRUE),
+                                     radioButtons(
+                                       "upload_encoding",
+                                       label = "Select File Encoding",
+                                       choices = list("Default"="", "UTF-8", "latin1"),
+                                       selected = ""
+                                     )),
+                              column(6, 
+                                     # Input: Select separator ----
+                                     radioButtons(
+                                       "sep",
                                        "Separator",
                                        choices = c(
                                          Comma = ",",
                                          Semicolon = ";",
                                          Tab = "\t"
-                                         ),
+                                       ),
                                        selected = ","
-                          ), 
-                         # Input: Select quotes ----
-                         radioButtons("quote",
-                                      "Quote Delimiter",
-                                      choices = c(None = "",
-                                                  "Double Quote" = '"',
-                                                  "Single Quote" = "'"),
-                                      selected = '"'
-                         ), 
-                         # Input: Select decimal separator ----
+                                     ),
+                                     # Input: Select quotes ----
+                                     radioButtons(
+                                       "quote",
+                                       "Quote Delimiter",
+                                       choices = c(
+                                         None = "",
+                                         "Double Quote" = '"',
+                                         "Single Quote" = "'"
+                                       ),
+                                       selected = '"'
+                                     ),
+                        # Input: Select decimal separator ----
                          radioButtons("dec",
                                       "Decimal Indicator",
                                       choices = c(".", ","),
                                       selected = '.')
-                ))
-            ))
-        )))
+                                    ))
+                   )),
+          conditionalPanel(
+            condition = "input.sample_or_real == 'shapefile'",
+            fluidRow(column(12,
+                            fileInput('shape', 'Select all files associated with the shapefile (.shp, .dbf,.sbn,.sbx,.shx and .prj)',
+                                      multiple=TRUE, 
+                                      accept=c('.shp','.dbf','.sbn','.sbx','.shx',".prj"),
+                                      placeholder = "Select All Data Files At Once"
+                                      )
+                            )
+                     )
+            )
+          )
+        ))
     ),
     
     tabItem(tabName = "home",
