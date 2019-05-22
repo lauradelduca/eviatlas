@@ -49,7 +49,7 @@ The EviAtlas home page. Primary functionality is accessed via the sidebar on the
 Landing page: Background information about EviAtlas and systematic maps is provided, along with a ‘how to’ guide. Users can learn about evidence synthesis and find references and links to useful guidance material.
 
 
-## Upload Data and data Attributes
+## Upload Data and Data Attributes
 
 Upload a systematic review dataset (csv format) using the panel on the right, and then use the left sidebar to view a systematic map generated from your dataset, as well as some common plots used in systematic reviews.
 
