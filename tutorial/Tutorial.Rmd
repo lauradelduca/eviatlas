@@ -9,6 +9,15 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
+Under ‘Data Attributes’ you can check that the data were loaded correctly. Then the app generates an evidence atlas, in the “Evidence Atlas” tab on the left sidebar. The app attempts to automatically identify columns used to store latitude and longitude, but you can also manually select those fields. You can cluster the data, change the basemap, color points by a variable, and filter the data in the ‘Map Database’ tab. You can customize the pop-ups at each point by specifying the data fields. Generated maps can be exported in both interactive and static image formats.
+
+
+The “Map Database” tab relies on the DT R package and provides a spreadsheet-like interface. You can subset the data, and download these filtered subsets in .csv format. The final two tabs (“Descriptive Plots” and “Heatmap”) use the ggplot2 data visualisation R package to create graphics commonly used in systematic maps (and reviews). The distribution and the number of studies across regions, years or any other single data field can be visualised and explored under the tab “Descriptive Plots”. Producing heat maps can help to identify knowledge gaps and clusters across the database; you can cross-tabulate two or more variables and display the number of studies belonging to multiple categories.
+
+
+
+
 # Evidence Synthesis Hackathon
 
 what evidence synthesis does
@@ -60,6 +69,11 @@ Please use the example dataset to see what EviAtlas can do!
 can see dimensions of uploaded dataset, variables
 
 ## Evidence Atlas
+
+Following successful data upload, the app generates an evidence atlas, seen in the “Evidence Atlas” tab on the left sidebar. The app attempts to automatically identify columns used to store latitude and longitude information within the data. However, as each dataset may utilise different naming conventions, dropdown menus are also provided in the “Evidence Atlas” page for the user to manually select coordinate fields. Additional features for interactivity in the spatial maps include: clustering according to location so that points do not cover each other when locations overlap; pop-ups on hover over each point showing user-specified data fields; and viewing a subset of the data (based on filters set in the app’s “Map Database” tab) (see Figure 3). Generated maps can be exported by the user in both interactive (.html) and static image formats (.pdf, .jpg). 
+
+
+
 Users can examine the data spatially on a cartographic map based on latitude and longitude data provided, clustering points to various degrees, colouring points by data attributes, and customising what information is displayed in pop-ups, including hyperlinks if present. 
 
 Systematic maps utilising different EviAtlas functionality with a common dataset. Studies can be clustered by location (a), custom fields can be used to generate pop-up messages for each study (b), and a subset of the data can be filtered (c).
@@ -77,9 +91,14 @@ Systematic maps utilising different EviAtlas functionality with a common dataset
 \  
 
 
-. While EviAtlas draws on a number of R packages, it relies particularly heavily on leaflet [17], an Open Source JavaScript tool for creating interactive, web-ready maps. It also relies on tidyverse packages that aim to facilitate data handling by reducing ‘mess’ in underlying data [18].
+While EviAtlas draws on a number of R packages, it relies particularly heavily on leaflet [17], an Open Source JavaScript tool for creating interactive, web-ready maps. It also relies on tidyverse packages that aim to facilitate data handling by reducing ‘mess’ in underlying data [18].
+
+EviAtlas can be accessed online at http://estech.shinyapps.io/eviatlas. The app homepage (Figure 2) allows users to upload their systematic map database into the application or use a pre-loaded sample database. Users can access all primary functionalities for querying the database and generating summary table and figures via a sidebar. The main functionalities of EviAtlas are outlined in Table 1. Current options allow users to create spatial maps (“Evidence Atlas”), human-readable data tables (“Map Database”), summary histograms (“Descriptive Plots”) and heatmaps (“Heatmap”). Under all options, users can specify data fields and categories they want to query and visualise. The “About EviAtlas” option on the sidebar simply leads to the homepage.
 
 ### Map Database
+The “Map Database” tab, which relies heavily on the R package DT [19], provides a familiar spreadsheet-like interface for users to subset their data using available data filters such that different groups of data can be viewed in the form of evidence atlases. These filtered subsets of the original database can also be downloaded in .csv format. 
+
+
 Displays the map database as uploaded with customisable visualisation of columns. Users can filter numerical and categorical variables. Users can apply this filtering to the rest of EviAtlas to subset the other visualisations produced across the tool.
 Examining data and producing easily readable databases of evidence.
 Configure Map, Save Map
@@ -92,6 +111,8 @@ select columns, apply, download filtered data
 \  
 
 ## Descriptive Plots
+The final two tabs (“Descriptive Plots” and “Heatmap”) pull in plotting functionality from the ggplot2 data visualisation R package [20]. These plots visually summarise the evidence in graphics commonly used in systematic maps (and reviews). The distribution and the number of studies across regions, years or any other single data field can be visualised and explored under the tab “Descriptive Plots”. 
+
 Common charts, such as histograms and heatmaps, used in systematic reviews and maps of empirical evidence can be generated through EviAtlas.
 
 Produces histograms for specified variables, displaying the number of study lines per level of the variable. For example, by year, or by country
@@ -105,6 +126,8 @@ select variables, download
 \  
 
 ## Heatmap
+For more complex visualisations, two data fields of interest can be cross-tabulated using the “Heatmap” tab. Heat maps present the number of the articles included in the systematic map in a matrix of counts, where the darker coloured cells imply higher frequency of occurrences of evidence (see Figure 5 for an example of a heat map, and see [12]).  
+
 Cross tabulates two variables to display the number of study lines across all levels of each variable.
 Producing heat maps that help to identify knowledge gaps and clusters across the database.
 select variables, download
